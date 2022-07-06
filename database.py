@@ -1,41 +1,62 @@
-from sqlite3 import connect
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
-def start_db():
-    conn = connect("database.db")
-    cursor = conn.cursor()
-    cursor.execute("""CREATE TABLE IF NOT EXISTS 'registered_users'(login TEXT, password TEXT, 
-    name TEXT, surname TEXT, role TEXT, year_of_enter TEXT, codeword TEXT)""")
-    conn.commit()
+db = SQLAlchemy()
 
 
-def add_new_user(login, password, name, surname, role, year, codeword):
-    conn = connect("database.db")
-    cursor = conn.cursor()
-    cursor.execute("""INSERT INTO 'registered_users' VALUES (?, ?, ?, ?, ?, ?, ?)""",
-                   (login, password, name, surname, role, year, codeword))
-    conn.commit()
-
-
-def login_check(login):
-    conn = connect("database.db")
-    cursor = conn.cursor()
-    log = cursor.execute("""SELECT login FROM 'registered_users' WHERE login=?""", (login, ))
-    if log.fetchone() is None:
-        return 'ok'
-    else:
-        return 'login occupied'
-
-
-def authorization(login, password):
-    conn = connect("database.db")
-    cursor = conn.cursor()
-    if login_check(login) == 'ok':
+def auth_check(login, password):
+    if check_login(login) == 'login not found':
         return 'user not found'
     else:
-        cursor.execute(f"""SELECT password FROM 'registered_users' WHERE login = {login}""")
-        row = cursor.fetchone()
-        if row[0] == password:
-            return 'user_authorized'
+        row = RegisteredUsers.query.filter(RegisteredUsers.login == login).all()
+        if check_password_hash(row[0].psw, password):
+            return 'user authorized'
         else:
-            return 'wrong_password'
+            return 'wrong password'
+
+
+def check_login(login):
+    row = RegisteredUsers.query.filter(RegisteredUsers.login == login).all()
+    if not row:
+        return 'login not found'
+    else:
+        return 'login found'
+
+
+class RegisteredUsers(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    login = db.Column(db.String(20), unique=True)
+    psw = db.Column(db.String(500), nullable=False)
+    codeword = db.Column(db.String(500))
+
+    def __repr__(self):
+        return f"<users {self.id}>"
+
+
+class UsersMetaData(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(30))
+    surname = db.Column(db.String(30))
+    role = db.Column(db.String(10))
+    year_of_enter = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('registered_users.id'))
+
+    def __repr__(self):
+        return f"<users {self.id}>"
+
+
+def add_new_user(login, psw, codeword, name, surname, role, year_of_enter):
+    try:
+        pass_hash = generate_password_hash(password=psw)
+        codeword_hash = generate_password_hash(password=codeword)
+        RU = RegisteredUsers(login=login, psw=pass_hash, codeword=codeword_hash)
+        UMD = UsersMetaData(name=name, surname=surname, role=role, year_of_enter=year_of_enter, user_id=RU.id)
+        db.session.add_all(UMD, RU)
+        db.session.flush()
+        db.session.commit()
+        return 'user added'
+    except Exception as e:
+        db.session.rollback()
+        print(e)
+        return 'error'
