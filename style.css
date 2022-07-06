@@ -1,0 +1,134 @@
+body{margin:0px;}
+input{outline:none;}
+img{position:absolute;}
+input[type="text"]{
+	background-color:transparent;
+	border-size:1px;
+	border-color:transparent transparent lime transparent;
+	border-style:solid;
+}
+input::placeholder{color:white;opacity:0.7;}
+#header{
+	position:absolute;
+	width:100%;
+	height:10%;
+	z-index:2;
+	background-image: url("pics/clever_header.png");
+	background-size:100% 100%;
+	background-repeat: no-repeat;
+
+}
+#main{
+	position: absolute;
+	top:10%;
+	width:100%;
+	height:90%;
+	z-index:1;
+	background-image:url("pics/clever_main.jpg");
+	background-size:100% 100%;
+	background-repeat:no-repeat;
+}
+#NickName{
+	position:absolute;
+	color:#F5FCF7;
+	top:50%;left:20%;
+	transform:translate(0,-50%);
+	font-size:20px;
+	font-style:"Times New Roman";
+	text-decoration:underline;
+}
+#find_input{
+	position: absolute;
+	top:50%;left:30%;
+	height:35%;
+	width:25%;
+	transform:translate(0%,-50%);
+	border: none;
+	background-color:#C9D6CE;
+	font-family:"Times New Roman";
+	font-size:14px;
+	border-radius:5px;
+}
+#lupa{
+	top:50%;
+	transform:translate(0,-50%);
+}
+#logo{
+	top:50%;left:1%;
+	transform:translate(0,-50%);
+}
+#menu{
+	top:50%;left:10%;
+	transform:translate(0,-50%);
+}
+#time_block{
+	position:absolute;
+	top:50%;
+	right:20%;
+	transform:translate(0,-50%);
+	text-align:center;
+	color:white;
+}
+#registration{
+	position: absolute;
+	top:50%;left:50%;
+	transform:translate(-50%,-50%);
+	width:275px;
+	height:400px;
+	background:linear-gradient(#287233,#008000,#006633);
+	border-radius:20px;
+}
+.line{
+	position:relative;
+	width:90%;height:3px;
+	left:5%;margin-bottom:5%;
+	background-color:lime;
+	border-radius:5px;
+}
+.inp{
+	position:absolute;
+	top:50%;left:50%;
+	transform:translate(-50%,-50%);
+	width:205px;
+	height:20px;
+	font-size:20px;
+}
+.inp_block{
+	position:relative;
+	left:50%;transform:translate(-50%,0);
+	width:250px;
+	height:50px;
+	margin-bottom:5%;
+}
+#time_table{
+	position:absolute;
+	top:50%;right:2%;
+	transform:translate(0,-50%);
+}
+#submit_button{
+	position:absolute;
+	top:50%;left:50%;
+	transform:translate(-50%,-50%);
+	width:125px;
+	height:40px;
+	border-radius:20px;
+	border:none;
+	font-size:20px;
+	background-color:white;
+	color:black;
+	font-family:"Times New Roman";
+	font-weight:bold;
+}
+#new_acc{
+	position:absolute;
+	bottom:2%;right:2%;
+	text-decoration:underline;
+	color:gray;
+}
+
+
+
+
+
+
+
